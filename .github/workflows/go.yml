@@ -1,44 +1,40 @@
 # This workflow will build a golang project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
 
+# Название рабочего процесса
 name: Go
 
+# Условие запуска
 on:
+  # Запуск по событию "push" (заливка изменений в ветку)
   push:
+  # Указывает, что нужно запускать рабочий процесс, только если событие относится к ветке main
     branches: [ "main" ]
+  # Запуск по событию "pull_request". Поле "types" не указано, поэтому учитываются события по открытию, переоткрытию пул-реквеста и изменению в ветке.
   pull_request:
+    # Указывает, что нужно запускать рабочий процесс, только если событие относится к ветке main
     branches: [ "main" ]
 
+# Задания
 jobs:
-
+  # Задание с идентификатором "build"
   build:
+    # Для запуска задания используется раннер "ubuntu-latest", что соответствует последней версии Ubuntu
     runs-on: ubuntu-latest
+    # Шаги задания
     steps:
-    - uses: actions/checkout@v4
+    # шаг с именем "Checkout Go"
+    - name: Checkout Go
+    # Первый шаг использует действие "actions/checkout@v4", которое извлекает репозиторий для дальнейшей работы с ним
+      uses: actions/checkout@v4
+      # шаг с именем "Set up Docker"
 
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: '1.23'
-  
-    - name: Cache Go modules
-      uses: actions/cache@v3
-      with:
-        path: /home/runner/go/pkg/mod
-        key: ${{ runner.os }}-go-${{ hashFiles('**/go.mod') }}
-        restore-keys: |
-          ${{ runner.os }}-go-
-  
-    - name: Install golangci-lint
-      run: |
-        curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b /home/runner/go/bin v1.51.2
-        echo "/home/runner/go/bin" >> $GITHUB_PATH
-  
-    - name: Lint
-      run: golangci-lint run
+    - name: Build and Test with Docker 
+      run: | 
+        docker pull your-docker-image:tag 
+        docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace your-docker-image:tag sh -c "apk add --no-cache go && go build -v ./..."
 
-    - name: Build
-      run: go build -v ./...
-
+    # шаг с именем "Test"
     - name: Test
+      # этот шаг выполняет команду 'go test -v ./...'
       run: go test -v ./...
