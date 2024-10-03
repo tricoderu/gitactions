@@ -1,4 +1,4 @@
-name: Go Test 2.2
+name: Go Test Race 2.2
 
 on:
   workflow_run:
