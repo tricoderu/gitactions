@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     # Указываем, что следует использовать Alpine в качестве среды выполнения.
     container:
-      image: alpine:latest
+      image: golang:1.23-alpine
 
     # Шаги задания 
     steps: 
@@ -28,10 +28,10 @@ jobs:
     - name: Checkout Go 
       uses: actions/checkout@v4 
  
-    # Установим Go в контейнер Alpine
-    - name: Set up Go
-      run: | 
-        apk add --no-cache go 
+    # Установим Go, он уже доступен в образе golang:1.23-alpine, поэтому этот шаг можно удалить
+    # - name: Set up Go
+    #   run: | 
+    #     apk add --no-cache go 
 
     # шаг с именем "Build" 
     - name: Build 
