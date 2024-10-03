@@ -1,0 +1,22 @@
+name: Go Lint 2.3
+
+on:
+  workflow_run:
+    workflows: 
+      - "Go Build 1"     # Имя первого рабочего процесса
+      - "Go Test 2.1"    # Имя второго рабочего процесса
+      - "Go Test 2.2"    # Имя третьего рабочего процесса
+    types:
+      - completed  # Запускать только после завершения
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v4
+      - name: Lint
+      # конкретная версия помогает избежать неожиданных изменений, когда новая версия выходит
+        uses: golangci/golangci-lint-action@v1.61.0-alpine

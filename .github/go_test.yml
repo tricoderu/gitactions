@@ -1,0 +1,20 @@
+name: Go Test 2.1
+
+on:
+  workflow_run:
+    workflows: ["Go Build 1"]  # Имя рабочего процесса, от которого зависит этот
+    types:
+      - completed  # Запускать только после завершения
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.23'
+      - name: Test
+        run: go test -v ./...
