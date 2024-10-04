@@ -1,6 +1,6 @@
 // main.go
 // БЕЗ ГОНКИ
-/*package main
+package main
 
 func main() {
 
@@ -12,9 +12,10 @@ func MaxInt(a, b int) int {
 	}
 
 	return b
-}*/
+}
+
 // С ГОНКОЙ
-package main
+/*package main
 
 import (
 	"fmt"
@@ -41,4 +42,4 @@ func MaxInt(a, b int) int {
 	}
 
 	return b
-}
+}*/
